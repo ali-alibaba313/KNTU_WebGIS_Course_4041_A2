@@ -52,3 +52,37 @@ searchBtn.addEventListener("click", async () => {
     alert("خطا در ژئوکدینگ");
   }
 });
+
+const WEATHER_API_KEY = window.WEATHER_API_KEY;
+
+// div نمایش هوا
+const weatherDiv = document.createElement("div");
+weatherDiv.style.position = "absolute";
+weatherDiv.style.bottom = "10px";
+weatherDiv.style.left = "10px";
+weatherDiv.style.background = "white";
+weatherDiv.style.padding = "10px";
+weatherDiv.style.border = "1px solid #ccc";
+weatherDiv.style.zIndex = "1000";
+weatherDiv.innerHTML = "روی نقشه کلیک کن";
+document.body.appendChild(weatherDiv);
+
+// کلیک روی نقشه
+map.on("click", async (evt) => {
+  const [lon, lat] = ol.proj.toLonLat(evt.coordinate);
+
+  try {
+    const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat},${lon}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    weatherDiv.innerHTML = `
+      <b>Weather</b><br/>
+      Temp: ${data.current.temp_c} °C<br/>
+      Condition: ${data.current.condition.text}
+    `;
+  } catch (err) {
+    console.error(err);
+    weatherDiv.innerHTML = "خطا در دریافت هواشناسی";
+  }
+});
