@@ -137,3 +137,80 @@
   کلیدهای API در کد هاردکد نشده‌اند و در فایل محلی <code>config.js</code> نگهداری می‌شوند.
   این فایل در <code>.gitignore</code> قرار دارد و در مخزن GitHub منتشر نمی‌شود.
 </p>
+<hr />
+
+<h2 dir="rtl">جزئیات فنی مقایسه APIها (تکمیلی)</h2>
+
+<h3 dir="rtl">محدودیت نرخ درخواست (Rate Limits)</h3>
+<ul dir="rtl">
+  <li><b>OpenMapQuest:</b> محدودیت نرخ درخواست دارد و در پلن رایگان سقف استفاده مشخصی اعمال می‌شود.</li>
+  <li><b>LocationIQ:</b> در پلن رایگان نرخ درخواست محدود است، اما برای استفاده آموزشی و تست کافی می‌باشد.</li>
+  <li><b>OpenCage:</b> محدود به ۲۵۰۰ درخواست در روز در نسخه آزمایشی.</li>
+  <li><b>OpenWeatherMap:</b> محدودیت روزانه در پلن رایگان دارد.</li>
+  <li><b>WeatherAPI.com:</b> پلن رایگان با سهمیه ماهانه بسیار بالا و محدودیت نرخ مناسب.</li>
+</ul>
+
+<h3 dir="rtl">نحوه دریافت API Key</h3>
+<ul dir="rtl">
+  <li><b>LocationIQ:</b> ثبت‌نام → Dashboard → Access Tokens → دریافت API Key</li>
+  <li><b>WeatherAPI.com:</b> ثبت‌نام → Dashboard → API Keys → دریافت API Key</li>
+</ul>
+
+<h3 dir="rtl">محاسبه نسبت قیمت‌ها</h3>
+<p dir="rtl">
+  برای مقایسه هزینه‌ها، قیمت به ازای ۱۰۰۰ درخواست مبنا قرار داده شده است:
+</p>
+<ul dir="rtl">
+  <li>OpenMapQuest: ۴٫۵ دلار / ۱۰۰۰ درخواست</li>
+  <li>LocationIQ: حدود ۰٫۱۱ دلار / ۱۰۰۰ درخواست</li>
+</ul>
+
+<p dir="rtl">
+  نسبت قیمت:
+  <br />
+  <b>۴٫۵ ÷ ۰٫۱۱ ≈ ۴۱</b>
+  <br />
+  بنابراین، LocationIQ حدود <b>۴۱ برابر ارزان‌تر</b> از OpenMapQuest در حجم بالا می‌باشد.
+</p>
+
+<hr />
+
+<h2 dir="rtl">ویژگی‌های OpenLayers استفاده‌شده در پروژه</h2>
+<ul dir="rtl">
+  <li>ایجاد نقشه تعاملی با <b>ol.Map</b></li>
+  <li>استفاده از لایه پایه OpenStreetMap</li>
+  <li>تنظیم View (center و zoom)</li>
+  <li>تبدیل مختصات بین سیستم‌ها (toLonLat / fromLonLat)</li>
+  <li>انیمیشن زوم و جابجایی نقشه</li>
+  <li>مدیریت رویداد کلیک روی نقشه</li>
+</ul>
+
+<hr />
+
+<h2 dir="rtl">راهنمای اجرای پروژه</h2>
+<ol dir="rtl">
+  <li>مخزن پروژه را Clone کنید.</li>
+  <li>فایل <code>config.js</code> را به‌صورت محلی ایجاد کرده و API Keyها را در آن قرار دهید.</li>
+  <li>مطمئن شوید فایل <code>config.js</code> در <code>.gitignore</code> قرار دارد.</li>
+  <li>در پوشه پروژه دستور زیر را اجرا کنید:
+    <pre>python -m http.server</pre>
+  </li>
+  <li>پروژه را در مرورگر با آدرس زیر باز کنید:
+    <pre>http://localhost:8000/index.html</pre>
+  </li>
+</ol>
+
+<hr />
+
+<h2 dir="rtl">وضعیت نهایی تطابق با صورت تمرین</h2>
+<ul dir="rtl">
+  <li>✔️ مقایسه حداقل ۳ API ژئوکدینگ</li>
+  <li>✔️ مقایسه حداقل ۳ API هواشناسی</li>
+  <li>✔️ بررسی قیمت، محدودیت‌ها و نرخ درخواست</li>
+  <li>✔️ محاسبه نسبت قیمت‌ها</li>
+  <li>✔️ توجیه انتخاب API نهایی</li>
+  <li>✔️ پیاده‌سازی Geocoding با Fetch API</li>
+  <li>✔️ نمایش داده هواشناسی با کلیک روی نقشه</li>
+  <li>✔️ مدیریت خطا و وضعیت بارگذاری</li>
+  <li>✔️ رعایت امنیت کلیدهای API</li>
+</ul>
