@@ -69,29 +69,47 @@ document.body.appendChild(weatherDiv);
 
 // کلیک روی نقشه
 map.on("click", async (evt) => {
-  const [lon, lat] = ol.proj.toLonLat(evt.coordinate);
-
-  // loading state (طبق تمرین)
-  weatherDiv.innerHTML = "در حال دریافت اطلاعات هواشناسی...";
-
-  try {
-    const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat},${lon}`;
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      throw new Error("Weather API error");
-    }
-
-    const data = await res.json();
-
+    const [lon, lat] = ol.proj.toLonLat(evt.coordinate);
+  
+    // 1) نمایش مختصات + loading (یک‌بار)
     weatherDiv.innerHTML = `
-      <b>Weather</b><br/>
-      Temp: ${data.current.temp_c} °C<br/>
-      Condition: ${data.current.condition.text}<br/>
-      Humidity: ${data.current.humidity} %
+      <b>مختصات انتخاب‌شده</b><br/>
+      Lat: ${lat.toFixed(4)}<br/>
+      Lon: ${lon.toFixed(4)}<br/>
+      <hr/>
+      در حال دریافت اطلاعات هواشناسی...
     `;
-  } catch (err) {
-    console.error(err);
-    weatherDiv.innerHTML = "خطا در دریافت داده‌های هواشناسی";
-  }
-});
+  
+    try {
+      const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat},${lon}`;
+      const res = await fetch(url);
+  
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  
+      const data = await res.json();
+  
+      // 2) بعد از دریافت، کل متن را کامل جایگزین کن (نه +=)
+      weatherDiv.innerHTML = `
+        <b>مختصات انتخاب‌شده</b><br/>
+        Lat: ${lat.toFixed(4)}<br/>
+        Lon: ${lon.toFixed(4)}<br/>
+        <hr/>
+        <b>اطلاعات هواشناسی</b><br/>
+        Temp: ${data.current.temp_c} °C<br/>
+        Condition: ${data.current.condition.text}<br/>
+        Humidity: ${data.current.humidity} %
+      `;
+    } catch (err) {
+      console.error(err);
+  
+      // 3) اگر خطا شد هم همچنان مختصات بماند
+      weatherDiv.innerHTML = `
+        <b>مختصات انتخاب‌شده</b><br/>
+        Lat: ${lat.toFixed(4)}<br/>
+        Lon: ${lon.toFixed(4)}<br/>
+        <hr/>
+        خطا در دریافت داده‌های هواشناسی
+      `;
+    }
+  });
+  
