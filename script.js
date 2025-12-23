@@ -71,18 +71,27 @@ document.body.appendChild(weatherDiv);
 map.on("click", async (evt) => {
   const [lon, lat] = ol.proj.toLonLat(evt.coordinate);
 
+  // loading state (طبق تمرین)
+  weatherDiv.innerHTML = "در حال دریافت اطلاعات هواشناسی...";
+
   try {
     const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${lat},${lon}`;
     const res = await fetch(url);
+
+    if (!res.ok) {
+      throw new Error("Weather API error");
+    }
+
     const data = await res.json();
 
     weatherDiv.innerHTML = `
       <b>Weather</b><br/>
       Temp: ${data.current.temp_c} °C<br/>
-      Condition: ${data.current.condition.text}
+      Condition: ${data.current.condition.text}<br/>
+      Humidity: ${data.current.humidity} %
     `;
   } catch (err) {
     console.error(err);
-    weatherDiv.innerHTML = "خطا در دریافت هواشناسی";
+    weatherDiv.innerHTML = "خطا در دریافت داده‌های هواشناسی";
   }
 });
